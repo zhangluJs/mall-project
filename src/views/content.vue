@@ -15,29 +15,20 @@
                             <use xlink:href="#icon-arrow-short"></use>
                         </svg>
                     </a>
-                    <a href="javascript:void(0)" class="filterby stopPop">Filter by</a>
+                    <a href="javascript:void(0)" class="filterby stopPop" @click="shouFilterPop">Filter by</a>
                 </div>
                 <div class="accessory-result">
                     <!-- filter -->
-                    <div class="filter stopPop" id="filter">
-                    <dl class="filter-price">
-                        <dt>Price:</dt>
-                        <dd>
-                            <a href="javascript:void(0)">All</a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:void(0)">0 - 100</a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:void(0)">100 - 500</a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:void(0)">500 - 1000</a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:void(0)">1000 - 2000</a>
-                        </dd>
-                    </dl>
+                    <div class="filter stopPop" id="filter" :class="{'filterby-show': filterBy}">
+                        <dl class="filter-price">
+                            <dt>Price:</dt>
+                            <dd @click="setPriceFilter('all')">
+                                <a href="javascript:void(0)" :class="{'cur': priceChecked === 'all'}">All</a>
+                            </dd>
+                            <dd v-for="(item, index) in priceFilter" :key="index" @click="setPriceFilter(index)">
+                                <a href="javascript:void(0)" :class="{'cur': priceChecked === index}">{{item.startPrice}} - {{item.endPrice}}</a>
+                            </dd>
+                        </dl>
                     </div>
 
                     <!-- search result accessories list -->
@@ -46,7 +37,7 @@
                             <ul>
                                 <li v-for="(item, index) in goodsList" :key="index">
                                     <div class="pic">
-                                        <a href="#"><img :src="'static/img/' + item.productImg" alt=""></a>
+                                        <a href="#"><img v-lazy="'static/img/' + item.productImg" alt=""></a>
                                     </div>
                                     <div class="main">
                                     <div class="name">{{item.productName}}</div>
@@ -62,6 +53,7 @@
                 </div>
             </div>
         </div>
+        <div class="md-overlay" v-show="overLayFlag" @click="closePop"></div>
         <nav-footer></nav-footer>
     </div>
 </template>
@@ -79,7 +71,24 @@ export default {
     },
     data() {
         return {
-            goodsList: []
+            goodsList: [],
+            priceFilter: [
+                {
+                    startPrice: '0.00',
+                    endPrice: '500.00'
+                },
+                {
+                    startPrice: '500.00',
+                    endPrice: '1000.00'
+                },
+                {
+                    startPrice: '1000.00',
+                    endPrice: '2000.00'
+                }
+            ],
+            priceChecked: 'all',
+            filterBy: false,
+            overLayFlag: false
         }
     },
     mounted() {
@@ -91,6 +100,18 @@ export default {
                 let result = res.data;
                 this.goodsList = result.result;
             })
+        },
+        setPriceFilter(index) {
+            this.priceChecked = index;
+            this.closePop();
+        },
+        shouFilterPop() {
+            this.filterBy = true;
+            this.overLayFlag = true;
+        },
+        closePop() {
+            this.filterBy = false;
+            this.overLayFlag = false;
         }
     }
 }
