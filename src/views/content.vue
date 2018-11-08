@@ -48,7 +48,7 @@
                                         <div class="name">{{item.productName}}</div>
                                         <div class="price">{{item.salePrice}}</div>
                                         <div class="btn-area">
-                                            <a href="javascript:;" class="btn btn--m">加入购物车</a>
+                                            <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
                                         </div>
                                     </div>
                                 </li>
@@ -156,6 +156,8 @@ export default {
         },
         sortGoods() {
             this.sortFlag = !this.sortFlag;
+            this.params.page = 1;
+            this.pageSize = 8;
             this.getGoodsList();
         },
         setPriceFilter(index) {
@@ -171,6 +173,16 @@ export default {
         closePop() {
             this.filterBy = false;
             this.overLayFlag = false;
+        },
+        addCart(productId) {
+            axios.post('/goods/addCart', {productId}).then(res => {
+                let result = res.data;
+                if(result.status === '0') {
+                    alert('添加成功')
+                } else {
+                    alert('添加失败');
+                }
+            })
         }
     }
 }
