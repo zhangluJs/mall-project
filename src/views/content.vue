@@ -9,11 +9,9 @@
                 <div class="filter-nav">
                     <span class="sortby">Sort by:</span>
                     <a href="javascript:void(0)" class="default cur">Default</a>
-                    <a href="javascript:void(0)" class="price" @click="sortGoods">
+                    <a href="javascript:void(0)" class="price" v-bind:class="{'sort-up': sortFlag}" @click="sortGoods">
                         Price 
-                        <svg class="icon icon-arrow-short">
-                            <use xlink:href="#icon-arrow-short"></use>
-                        </svg>
+                        <img class="icon icon-arrow-short" src="../../static/img/sort.png">
                     </a>
                     <a href="javascript:void(0)" class="filterby stopPop" @click="shouFilterPop">Filter by</a>
                 </div>
@@ -74,8 +72,6 @@ import NavHeader from '../components/NavHeader.vue';
 import NavFooter from '../components/NavFooter.vue';
 import NavBread from '../components/NavBread.vue';
 
-import axios from 'axios';
-
 export default {
     name: 'view-content',
     components: {
@@ -126,7 +122,7 @@ export default {
             this.loading = true;
             let params = this.params;
             params.priceLevel = this.priceChecked;
-            axios.get('/goods', {params}).then(res => {
+            this.$http.get('/goods', {params}).then(res => {
                 let result = res.data;
                 if(result.status === '0') {
                     if (flag) {
@@ -175,7 +171,7 @@ export default {
             this.overLayFlag = false;
         },
         addCart(productId) {
-            axios.post('/goods/addCart', {productId}).then(res => {
+            this.$http.post('/goods/addCart', {productId}).then(res => {
                 let result = res.data;
                 if(result.status === '0') {
                     alert('添加成功')

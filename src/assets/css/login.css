@@ -47,6 +47,10 @@ a {
 .navbar-link {
   padding-left: 15px;
 }
+.navbar-link:hover {
+  color: #ee7a23;
+}
+
 .navbar-cart-container {
   position: relative;
 }
@@ -119,9 +123,10 @@ a {
   font-style: normal;
 }
 .login-wrap{
-  margin-top:30px;
+  margin-top:40px;
 }
 .md-content .btn-login{
+  position: relative;
   display: block;
   height: 38px;
   line-height: 38px;
@@ -136,11 +141,11 @@ a {
   border: 2px solid #61b1ef;
 }
 .error-wrap .error{
+  position: absolute;
   font-size: 12px;
   color: #d31723;
   visibility: hidden;
   display: block;
-  padding: 0 0 7px 17px;
   line-height: 16px;
   height: 16px;
   text-align: left;
