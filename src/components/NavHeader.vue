@@ -11,7 +11,7 @@
                     <!--<a href="/" class="navbar-link">我的账户</a>-->
                     <span class="navbar-link" v-if="nickName">{{nickName}}</span>
                     <a href="javascript:void(0)" class="navbar-link" v-if="!nickName" @click="loginModalFlag = true">Login</a>
-                    <a href="javascript:void(0)" class="navbar-link" v-if="nickName">Logout</a>
+                    <a href="javascript:void(0)" class="navbar-link" v-if="nickName" @click="doLogOut" >Logout</a>
                     <div class="navbar-cart-container">
                         <span class="navbar-cart-count"></span>
                         <a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -72,7 +72,18 @@ export default {
             this.errorTip = false;
         }
     },
+    mounted() {
+        this.checkLogin();
+    },
     methods: {
+        checkLogin() {
+            this.$http.get('/users/checkLogin').then(res => {
+                res = res.data;
+                if (res.status === '0') {
+                    this.nickName = res.result;
+                }
+            })
+        },
         login() {
             if (!this.userName || !this.userPwd) {
                 this.errorTip = true;
@@ -91,6 +102,14 @@ export default {
                 }
                 this.loginModalFlag= false;
                 this.nickName = res.result.userName;
+            })
+        },
+        doLogOut() {
+            this.$http.post('/users/logout').then(res => {
+                res = res.data;
+                if (res.status === '0') {
+                    this.nickName = ''
+                } 
             })
         }
     }

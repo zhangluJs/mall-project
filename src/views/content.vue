@@ -122,7 +122,7 @@ export default {
             this.loading = true;
             let params = this.params;
             params.priceLevel = this.priceChecked;
-            this.$http.get('/goods', {params}).then(res => {
+            this.$http.get('/goods/list', {params}).then(res => {
                 let result = res.data;
                 if(result.status === '0') {
                     if (flag) {
@@ -176,7 +176,7 @@ export default {
                 if(result.status === '0') {
                     alert('添加成功')
                 } else {
-                    alert('添加失败');
+                    alert(result.msg);
                 }
             })
         }
