@@ -13,11 +13,11 @@
                         Price 
                         <img class="icon icon-arrow-short" src="../../static/img/sort.png">
                     </a>
-                    <a href="javascript:void(0)" class="filterby stopPop" @click="shouFilterPop">Filter by</a>
+                    <a href="javascript:void(0)" class="filterby stoppop" @click="shouFilterPop">Filter by</a>
                 </div>
                 <div class="accessory-result">
                     <!-- filter -->
-                    <div class="filter stopPop" id="filter" :class="{'filterby-show': filterBy}">
+                    <div class="filter stoppop" id="filter" :class="{'filterby-show': filterBy}">
                         <dl class="filter-price">
                             <dt>Price:</dt>
                             <dd @click="setPriceFilter('all')">
@@ -56,14 +56,26 @@
                                 v-infinite-scroll="loadMore"
                                 infinite-scroll-disabled="busy"
                                 infinite-scroll-distance="20">
-                                <img v-if="loading" src="../../static/loading/loading-spinning-bubbles.svg"/>
+                                <img v-if="loading" src="../../static/loading/loading-spinning-bubbles.svg">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="md-overlay" v-show="overLayFlag" @click="closePop"></div>
+        <modal :mdshow="mdShow" @close="closeModal">
+            <p slot="message">请先登录，否则无法加入到购物车</p>
+            <div slot="btnGroup">
+                <a class="btn btn--m" @click="mdShow = false">关闭</a>
+            </div>
+        </modal>
+        <modal :mdshow="mdShowCart" @close="closeModal">
+            <p slot="message">加入购物车成功！</p>
+            <div slot="btnGroup">
+                <a class="btn btn--m" @click="mdShowCart = false">继续购物</a>
+                <router-link class="btn btn--m" to="/cart">查看购物车</router-link>
+            </div>
+        </modal>
         <nav-footer></nav-footer>
     </div>
 </template>
@@ -71,13 +83,15 @@
 import NavHeader from '../components/NavHeader.vue';
 import NavFooter from '../components/NavFooter.vue';
 import NavBread from '../components/NavBread.vue';
+import Modal from '../components/modal.vue';
 
 export default {
     name: 'view-content',
     components: {
         NavHeader,
         NavFooter,
-        NavBread
+        NavBread,
+        Modal
     },
     data() {
         return {
@@ -110,8 +124,10 @@ export default {
                 sort: true
             },
             busy: true,
-            loading: true
-        }
+            loading: true,
+            mdShow: false,
+            mdShowCart: false
+        };
     },
     mounted() {
         this.getGoodsList();
@@ -122,26 +138,31 @@ export default {
             this.loading = true;
             let params = this.params;
             params.priceLevel = this.priceChecked;
-            this.$http.get('/goods/list', {params}).then(res => {
+            this.$http.get('/goods/list', {
+                params
+            }).then(res => {
                 let result = res.data;
-                if(result.status === '0') {
+                if (result.status === '0') {
                     if (flag) {
                         let countList = this.goodsList.concat(result.result.list);
                         this.goodsList = countList;
                         if (result.result.count < 8) {
                             this.busy = true;
-                        } else {
+                        }
+                        else {
                             this.busy = false;
                         }
-                    } else {
+                    }
+                    else {
                         this.goodsList = result.result.list;
                         this.busy = false;
                     }
-                } else {
+                }
+                else {
                     this.goodsList = [];
                 }
                 this.loading = false;
-            })
+            });
         },
         loadMore() {
             this.busy = true;
@@ -171,15 +192,22 @@ export default {
             this.overLayFlag = false;
         },
         addCart(productId) {
-            this.$http.post('/goods/addCart', {productId}).then(res => {
+            this.$http.post('/goods/addCart', {
+                productId
+            }).then(res => {
                 let result = res.data;
-                if(result.status === '0') {
-                    alert('添加成功')
-                } else {
-                    alert(result.msg);
+                if (result.status === '0') {
+                    this.mdShowCart = true;
                 }
-            })
+                else {
+                    this.mdShow = true;
+                }
+            });
+        },
+        closeModal() {
+            this.mdShow = false;
+            this.mdShowCart = false;
         }
     }
-}
+};
 </script>

@@ -25,13 +25,13 @@
             <div class="md-modal-inner">
                 <div class="md-top">
                     <div class="md-title">Login in</div>
-                    <button class="md-close" @click="loginModalFlag = false">Close</button>
+                    <button class="md-close" type="button" @click="loginModalFlag = false">Close</button>
                 </div>
                 <div class="md-content">
                     <div class="confirm-tips">
                         <ul>
                             <li class="regi_form_input">
-                                <i class="icon IconPeople"></i>
+                                <i class="icon Iconpeople"></i>
                                 <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input regi_login_input_left" placeholder="User Name" data-type="loginname">
                             </li>
                             <li class="regi_form_input noMargin">
@@ -64,7 +64,7 @@ export default {
             loginModalFlag: false,
             nickName: '',
             logTipText: ''
-        }
+        };
     },
     watch: {
         loginModalFlag() {
@@ -82,7 +82,8 @@ export default {
                 if (res.status === '0') {
                     this.nickName = res.result;
                 }
-            })
+
+            });
         },
         login() {
             if (!this.userName || !this.userPwd) {
@@ -90,6 +91,7 @@ export default {
                 this.logTipText = '请输入用户名或密码';
                 return;
             }
+
             this.$http.post('/users/login', {
                 userName: this.userName,
                 userPwd: this.userPwd
@@ -100,22 +102,21 @@ export default {
                     this.logTipText = '密码或用户名输入错误';
                     return;
                 }
-                this.loginModalFlag= false;
+
+                this.loginModalFlag = false;
                 this.nickName = res.result.userName;
-            })
+            });
         },
         doLogOut() {
             this.$http.post('/users/logout').then(res => {
                 res = res.data;
                 if (res.status === '0') {
-                    this.nickName = ''
-                } 
-            })
+                    this.nickName = '';
+                }
+
+            });
         }
     }
-}
+};
 </script>
-<style src="../assets/css/login.css">
-
-</style>
-
+<style src="../assets/css/login.css"></style>
