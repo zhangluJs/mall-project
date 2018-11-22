@@ -1,6 +1,7 @@
 # vue2-demo
 
-> 从零构建vue2 + vue-router + vuex + VueResource/axios 开发环境到部署上线
+##### 从零开始构建一个简单的购物商城项目
+> 使用 vue2 + vue-router + vuex + VueResource/axios 进行相关代码开发
 
 ## Build Setup
 
