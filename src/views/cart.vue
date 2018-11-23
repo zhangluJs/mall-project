@@ -62,10 +62,13 @@
                             <li v-for="(item, index) in cartList" :key="index">
                                 <div class="cart-tab-1">
                                     <div class="cart-item-check">
-                                        <a href="javascipt:;" class="checkbox-btn item-check-btn">
-                                        <svg class="icon icon-ok">
-                                            <use xlink:href="#icon-ok"></use>
-                                        </svg>
+                                        <a href="javascipt:;"
+                                            class="checkbox-btn item-check-btn"
+                                            :class="{'check': item.checked === '1'}"
+                                            @click="editCart(item, 'checked')">
+                                            <svg class="icon icon-ok">
+                                                <use xlink:href="#icon-ok"></use>
+                                            </svg>
                                         </a>
                                     </div>
                                     <div class="cart-item-pic">
@@ -82,9 +85,9 @@
                                     <div class="item-quantity">
                                         <div class="select-self select-self-open">
                                         <div class="select-self-area">
-                                            <a class="input-sub">-</a>
+                                            <a class="input-sub" @click="editCart(item, 'minus')">-</a>
                                             <span class="select-ipt">{{item.productNum}}</span>
-                                            <a class="input-add">+</a>
+                                            <a class="input-add" @click="editCart(item, 'add')">+</a>
                                         </div>
                                         </div>
                                     </div>
@@ -94,7 +97,7 @@
                                 </div>
                                 <div class="cart-tab-5">
                                 <div class="cart-item-opration">
-                                    <a href="javascript:;" class="item-edit-btn">
+                                    <a href="javascript:;" class="item-edit-btn" @click="delProduct(item.productId)">
                                         <svg class="icon icon-del">
                                             <use xlink:href="#icon-del"></use>
                                         </svg>
@@ -108,9 +111,9 @@
                 <div class="cart-foot-wrap">
                     <div class="cart-foot-inner">
                         <div class="cart-foot-l">
-                        <div class="item-all-check">
+                        <div class="item-all-check" @click="toggleSelectAll()">
                             <a href="javascipt:;">
-                                <span class="checkbox-btn item-check-btn">
+                                <span class="checkbox-btn item-check-btn" :class="{'check': checkAllFlag}">
                                     <svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
                                 </span>
                                 <span>Select all</span>
@@ -119,7 +122,7 @@
                         </div>
                         <div class="cart-foot-r">
                         <div class="item-total">
-                            Item total: <span class="total-price">500</span>
+                            Item total: <span class="total-price">{{totalPrice}}</span>
                         </div>
                         <div class="btn-wrap">
                             <a class="btn btn--red">Checkout</a>
@@ -129,6 +132,13 @@
                 </div>
             </div>
         </div>
+        <modal :mdshow="modalConfirm" @close="closeModal">
+            <p slot="message">你确认要删除该产品吗？</p>
+            <div slot="btnGroup">
+                <a class="btn btn--m" @click="delCart()">确认</a>
+                <a class="btn btn--m" @click="modalConfirm = false">关闭</a>
+            </div>
+        </modal>
         <nav-footer></nav-footer>
     </div>
 </template>
@@ -143,8 +153,30 @@ export default {
     name: 'cart',
     data() {
         return {
-            cartList: []
+            cartList: [],
+            modalConfirm: false,
+            productId: null
         };
+    },
+    computed: {
+        checkAllFlag() {
+            let num = 0;
+            this.cartList.forEach(item => {
+                if (item.checked === '1') {
+                    num++;
+                }
+            });
+            return num === this.cartList.length;
+        },
+        totalPrice() {
+            let money = 0;
+            this.cartList.forEach(item => {
+                if (item.checked === '1') {
+                    money += (item.salePrice * item.productNum);
+                }
+            });
+            return money;
+        }
     },
     components: {
         NavHeader,
@@ -161,34 +193,86 @@ export default {
                 res = res.data;
                 this.cartList = res.result;
             }).catch(err => {
-                console.log(err);
+                alert(err);
+            });
+        },
+        closeModal() {
+            this.modalConfirm = false;
+        },
+        delProduct(id) {
+            this.productId = id;
+            this.modalConfirm = true;
+        },
+        delCart() {
+            this.$http.post('/users/del', {productId: this.productId}).then(res => {
+                res = res.data;
+                if (res.status === '0') {
+                    this.modalConfirm = false;
+                    this.init();
+                }
+            }).catch(err => {
+                alert(err);
+            });
+        },
+        editCart(item, flag) {
+            if (flag === 'add') {
+                item.productNum++;
+            } else if (flag === 'minus') {
+                if (item.productNum <= 1) {
+                    return false;
+                }
+                item.productNum--;
+            } else {
+                item.checked = item.checked === '1' ? '0' : '1';
+            }
+            this.$http.post('/users/cartEdit', {
+                productId: item.productId,
+                productNum: item.productNum,
+                checked: item.checked
+            }).then(res => {
+                res = res.data;
+            }).catch(err => {
+                alert(err);
+            });
+        },
+        toggleSelectAll() {
+            let flag = !this.checkAllFlag;
+            let checkAll = flag ? '1' : '0';
+            this.cartList.forEach(item => {
+                item.checked = checkAll;
+            });
+            this.$http.post('/users/cartEditCheckAll', {checkAll}).then(res => {
+                res = res.data;
+                if (res.tatus === '0') {
+                    console.log('success');
+                }
             });
         }
     }
 };
 </script>
 <style>
-  .input-sub,
-  .input-add {
-      display: inline-block;
-      overflow: hidden;
-      min-width: 40px;
-      height: 100%;
-      border: 0;
-      font-size: 16px;
-      text-align: center;
-      color: #605f5f;
-      background: #f0f0f0;
-  }
-  .item-quantity .select-self-area {
-      border: 1px solid #f0f0f0;
-      background: none;
-  }
-  .item-quantity .select-self-area .select-ipt {
-      display: inline-block;
-      width: 30px;
-      min-width: 30px;
-      padding: 0 3px;
-      text-align: center;
-  }
+.input-sub,
+.input-add {
+    display: inline-block;
+    overflow: hidden;
+    min-width: 40px;
+    height: 100%;
+    border: 0;
+    font-size: 16px;
+    text-align: center;
+    color: #605f5f;
+    background: #f0f0f0;
+}
+.item-quantity .select-self-area {
+    border: 1px solid #f0f0f0;
+    background: none;
+}
+.item-quantity .select-self-area .select-ipt {
+    display: inline-block;
+    width: 30px;
+    min-width: 30px;
+    padding: 0 3px;
+    text-align: center;
+}
 </style>
