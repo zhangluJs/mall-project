@@ -79,7 +79,7 @@
                                     </div>
                                 </div>
                                 <div class="cart-tab-2">
-                                    <div class="item-price">{{item.salePrice}}</div>
+                                    <div class="item-price">{{item.salePrice  | currencyFormat('¥')}}</div>
                                 </div>
                                 <div class="cart-tab-3">
                                     <div class="item-quantity">
@@ -93,7 +93,7 @@
                                     </div>
                                 </div>
                                 <div class="cart-tab-4">
-                                    <div class="item-price-total">{{item.productNum * item.salePrice}}</div>
+                                    <div class="item-price-total">{{(item.productNum * item.salePrice) | currencyFormat('¥')}}</div>
                                 </div>
                                 <div class="cart-tab-5">
                                 <div class="cart-item-opration">
@@ -122,7 +122,7 @@
                         </div>
                         <div class="cart-foot-r">
                         <div class="item-total">
-                            Item total: <span class="total-price">{{totalPrice}}</span>
+                            Item total: <span class="total-price">{{totalPrice | currencyFormat('¥')}}</span>
                         </div>
                         <div class="btn-wrap">
                             <a class="btn btn--red">Checkout</a>
@@ -148,6 +148,7 @@ import NavHeader from '../components/NavHeader.vue';
 import NavFooter from '../components/NavFooter.vue';
 import NavBread from '../components/NavBread.vue';
 import Modal from '../components/modal.vue';
+import {currency} from '../util/currency';
 
 export default {
     name: 'cart',
@@ -186,6 +187,9 @@ export default {
     },
     mounted() {
         this.init();
+    },
+    filters: {
+        currencyFormat: currency
     },
     methods: {
         init() {

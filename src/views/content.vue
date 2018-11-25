@@ -9,7 +9,7 @@
                 <div class="filter-nav">
                     <span class="sortby">Sort by:</span>
                     <a href="javascript:void(0)" class="default cur">Default</a>
-                    <a href="javascript:void(0)" class="price" v-bind:class="{'sort-up': sortFlag}" @click="sortGoods">
+                    <a href="javascript:void(0)" class="price" @click="sortGoods">
                         Price 
                         <img class="icon icon-arrow-short" src="../../static/img/sort.png">
                     </a>
