@@ -114,7 +114,7 @@
                         <div class="item-all-check" @click="toggleSelectAll()">
                             <a href="javascipt:;">
                                 <span class="checkbox-btn item-check-btn" :class="{'check': checkAllFlag}">
-                                    <svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
+                                    <svg class="icon icon-ok"><use xlink:href="#icon-ok"></use></svg>
                                 </span>
                                 <span>Select all</span>
                             </a>
