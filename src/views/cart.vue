@@ -125,7 +125,7 @@
                             Item total: <span class="total-price">{{totalPrice | currencyFormat('¥')}}</span>
                         </div>
                         <div class="btn-wrap">
-                            <a class="btn btn--red">Checkout</a>
+                            <a class="btn btn--red" :class="{'btn--dis': checkedCount === 0}" @click="checkout">Checkout</a>
                         </div>
                         </div>
                     </div>
@@ -161,13 +161,16 @@ export default {
     },
     computed: {
         checkAllFlag() {
+            return this.checkedCount === this.cartList.length;
+        },
+        checkedCount() {
             let num = 0;
             this.cartList.forEach(item => {
                 if (item.checked === '1') {
                     num++;
                 }
             });
-            return num === this.cartList.length;
+            return num;
         },
         totalPrice() {
             let money = 0;
@@ -251,6 +254,11 @@ export default {
                     console.log('success');
                 }
             });
+        },
+        checkout() {
+            if (this.checkedCount > 0) {
+                this.$router.push({path: '/address'});
+            }
         }
     }
 };
