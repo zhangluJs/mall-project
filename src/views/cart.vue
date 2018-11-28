@@ -169,6 +169,7 @@ export default {
                 if (item.checked === '1') {
                     num++;
                 }
+
             });
             return num;
         },
@@ -178,6 +179,7 @@ export default {
                 if (item.checked === '1') {
                     money += (item.salePrice * item.productNum);
                 }
+
             });
             return money;
         }
@@ -211,25 +213,38 @@ export default {
             this.modalConfirm = true;
         },
         delCart() {
-            this.$http.post('/users/del', {productId: this.productId}).then(res => {
+            this.$http.post('/users/del', {
+                productId: this.productId
+            }).then(res => {
                 res = res.data;
                 if (res.status === '0') {
                     this.modalConfirm = false;
                     this.init();
                 }
+
             }).catch(err => {
                 alert(err);
             });
         },
+
+        /**
+         * 设置商品数量&是否默认选中
+         *
+         * @param {Object} item 商品信息
+         * @param {string} flag 增加or减少
+         */
         editCart(item, flag) {
             if (flag === 'add') {
                 item.productNum++;
-            } else if (flag === 'minus') {
+            }
+            else if (flag === 'minus') {
                 if (item.productNum <= 1) {
                     return false;
                 }
+
                 item.productNum--;
-            } else {
+            }
+            else {
                 item.checked = item.checked === '1' ? '0' : '1';
             }
             this.$http.post('/users/cartEdit', {
@@ -242,23 +257,37 @@ export default {
                 alert(err);
             });
         },
+
+        /**
+         * 是否全选
+         */
         toggleSelectAll() {
             let flag = !this.checkAllFlag;
             let checkAll = flag ? '1' : '0';
             this.cartList.forEach(item => {
                 item.checked = checkAll;
             });
-            this.$http.post('/users/cartEditCheckAll', {checkAll}).then(res => {
+            this.$http.post('/users/cartEditCheckAll', {
+                checkAll
+            }).then(res => {
                 res = res.data;
                 if (res.tatus === '0') {
                     console.log('success');
                 }
+
             });
         },
+
+        /**
+         * 未选中任意商品时禁止跳转
+         */
         checkout() {
             if (this.checkedCount > 0) {
-                this.$router.push({path: '/address'});
+                this.$router.push({
+                    path: '/address'
+                });
             }
+
         }
     }
 };
