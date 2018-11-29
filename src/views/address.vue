@@ -60,7 +60,7 @@
                 <div class="addr-list-wrap">
                     <div class="addr-list">
                         <ul>
-                            <li v-for="(item, index) in addressList" :key="index">
+                            <li v-for="(item, index) in addressListFilter" :key="index" :class="{'check': index === checkedIndex}" @click="checkedIndex = index">
                                 <dl>
                                     <dt>{{item.userName}}</dt>
                                     <dd class="address">{{item.streetName}}</dd>
@@ -88,11 +88,12 @@
                     </div>
 
                     <div class="shipping-addr-more">
-                        <a class="addr-more-btn up-down-btn" href="javascript:;">
+                        <a class="addr-more-btn up-down-btn" href="javascript:;" @click="expand" :class="{'open': limit !== 3}">
                             more
-                            <i class="i-up-down"></i>
-                            <i class="i-up-down-l"></i>
-                            <i class="i-up-down-r"></i>
+                            <i class="i-up-down">
+                                <i class="i-up-down-l"></i>
+                                <i class="i-up-down-r"></i>
+                            </i>
                         </a>
                     </div>
                 </div>
@@ -137,8 +138,15 @@ import Modal from '../components/modal.vue';
 export default {
     data() {
         return {
+            limit: 3,
+            checkedIndex: 0,
             addressList: []
         };
+    },
+    computed: {
+        addressListFilter() {
+            return this.addressList.slice(0, this.limit);
+        }
     },
     components: {
         NavHeader,
@@ -158,6 +166,13 @@ export default {
                 res = res.data;
                 this.addressList = res.result || [];
             });
+        },
+        expand() {
+            if (this.limit === 3) {
+                this.limit = this.addressList.length;
+            } else {
+                this.limit = 3;
+            }
         }
     }
 };
