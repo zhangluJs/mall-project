@@ -72,9 +72,9 @@
                                     </a>
                                 </div>
                                 <div class="addr-opration addr-set-default">
-                                    <a href="javascript:;" class="addr-set-default-btn"><i>Set default</i></a>
+                                    <a href="javascript:;" class="addr-set-default-btn" v-if="!item.isDefault" @click="setDefault(item.addressId)"><i>Set default</i></a>
                                 </div>
-                                <div class="addr-opration addr-default">Default address</div>
+                                <div class="addr-opration addr-default" v-if="item.isDefault">Default address</div>
                             </li>
                             <li class="addr-new">
                                 <div class="add-new-inner">
@@ -170,9 +170,20 @@ export default {
         expand() {
             if (this.limit === 3) {
                 this.limit = this.addressList.length;
-            } else {
+            }
+            else {
                 this.limit = 3;
             }
+        },
+        setDefault(id) {
+            this.$http.post('/users/setDefault', {
+                addressId: id
+            }).then(res => {
+                res = res.data;
+                if (res.status === '0') {
+                    this.getAddressList();
+                }
+            });
         }
     }
 };
