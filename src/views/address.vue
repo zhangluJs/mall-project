@@ -60,13 +60,16 @@
                 <div class="addr-list-wrap">
                     <div class="addr-list">
                         <ul>
-                            <li v-for="(item, index) in addressListFilter" :key="index" :class="{'check': index === checkedIndex}" @click="checkedIndex = index">
+                            <li v-for="(item, index) in addressListFilter"
+                                :key="index"
+                                :class="{'check': index === checkedIndex}"
+                                @click="checkedIndex = index">
                                 <dl>
                                     <dt>{{item.userName}}</dt>
                                     <dd class="address">{{item.streetName}}</dd>
                                     <dd class="tel">{{item.tel}}</dd>
                                 </dl>
-                                <div class="addr-opration addr-del">
+                                <div class="addr-opration addr-del" @click="delAddress(item)">
                                     <a href="javascript:;" class="addr-del-btn">
                                         <svg class="icon icon-del"><use xlink:href="#icon-del"></use></svg>
                                     </a>
@@ -76,7 +79,7 @@
                                 </div>
                                 <div class="addr-opration addr-default" v-if="item.isDefault">Default address</div>
                             </li>
-                            <li class="addr-new">
+                            <li class="addr-new" @click="addNewAddress">
                                 <div class="add-new-inner">
                                     <i class="icon-add">
                                         <svg class="icon icon-add"><use xlink:href="#icon-add"></use></svg>
@@ -119,11 +122,18 @@
                     </div>
                 </div>
                 <div class="next-btn-wrap">
-                    <a class="btn btn--m btn--red">Next</a>
+                    <a class="btn btn--m btn--red" @click="doNextPage">Next</a>
                 </div>
             </div>
         </div>
     </div>
+    <modal :mdshow="modalConfirm" @close="closeModal">
+        <p slot="message">您是否确认要删除此地址？</p>
+        <div slot="btnGroup">
+            <a class="btn btn--m" @click="doDelAddress()">确认</a>
+            <a class="btn btn--m" @click="modalConfirm = false">关闭</a>
+        </div>
+    </modal>
     <nav-footer></nav-footer>
 </div>
 </template>
@@ -139,8 +149,11 @@ export default {
     data() {
         return {
             limit: 3,
-            checkedIndex: 0,
-            addressList: []
+            checkedIndex: '',
+            selectedAddress: '',
+            addressList: [],
+            modalConfirm: false,
+            addressId: ''
         };
     },
     computed: {
@@ -183,6 +196,45 @@ export default {
                 if (res.status === '0') {
                     this.getAddressList();
                 }
+            });
+        },
+        delAddress(item) {
+            this.modalConfirm = true;
+            this.addressId = item.addressId;
+        },
+        doDelAddress() {
+            this.$http.post('/users/delAddress', {
+                addressId: this.addressId
+            }).then(res => {
+                res = res.data;
+                if (res.status === '0') {
+                    this.modalConfirm = false;
+                    this.getAddressList();
+                }
+            });
+        },
+        closeModal() {
+            this.modalConfirm = false;
+        },
+        addNewAddress() {
+            this.$router.push({path: '/addNewAddress'});
+        },
+        doNextPage() {
+            let addressId = '';
+            if (!this.checkedIndex) {
+                this.addressList.forEach(item => {
+                    if (item.isDefault) {
+                        addressId = item.addressId;
+                    }
+                });
+            }
+            else {
+                addressId = this.addressList[this.checkedIndex].addressId;
+            }
+
+            this.$router.push({
+                path: '/orderConfirm',
+                query: {addressId}
             });
         }
     }

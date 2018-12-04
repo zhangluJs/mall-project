@@ -8,6 +8,7 @@ import Router from 'vue-router';
 import content from '@/views/content';
 import cart from '@/views/cart';
 import address from '@/views/address';
+import addNewAddress from '@/views/addNewAddress';
 
 Vue.use(Router);
 
@@ -24,5 +25,9 @@ export default new Router({
         path: '/address',
         name: 'address',
         component: address
+    }, {
+        path: '/addNewAddress',
+        name: 'addNewAddress',
+        component: addNewAddress
     }]
 });
