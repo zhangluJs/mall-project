@@ -1,95 +1,89 @@
 <template>
-    <div>
-        <nav-header></nav-header>
-        <nav-bread>
-            <span>Goods</span>
-        </nav-bread>
-        <div class="accessory-result-page accessory-page">
-            <div class="container">
-                <div class="filter-nav">
-                    <span class="sortby">Sort by:</span>
-                    <a href="javascript:void(0)" class="default cur">Default</a>
-                    <a href="javascript:void(0)" class="price" @click="sortGoods">
-                        Price 
-                        <img class="icon icon-arrow-short" src="../../static/img/sort.png">
-                    </a>
-                    <a href="javascript:void(0)" class="filterby stoppop" @click="shouFilterPop">Filter by</a>
+<div>
+    <nav-bread>
+        <span>Goods</span>
+    </nav-bread>
+    <div class="accessory-result-page accessory-page">
+        <div class="container">
+            <div class="filter-nav">
+                <span class="sortby">Sort by:</span>
+                <a href="javascript:void(0)" class="default cur">Default</a>
+                <a href="javascript:void(0)" class="price" @click="sortGoods">
+                    Price 
+                    <img class="icon icon-arrow-short" src="../../static/img/sort.png">
+                </a>
+                <a href="javascript:void(0)" class="filterby stoppop" @click="shouFilterPop">Filter by</a>
+            </div>
+            <div class="accessory-result">
+                <!-- filter -->
+                <div class="filter stoppop" id="filter" :class="{'filterby-show': filterBy}">
+                    <dl class="filter-price">
+                        <dt>Price:</dt>
+                        <dd @click="setPriceFilter('all')">
+                            <a href="javascript:void(0)" :class="{'cur': priceChecked === 'all'}">All</a>
+                        </dd>
+                        <dd v-for="(item, index) in priceFilter" :key="index" @click="setPriceFilter(index)">
+                            <a href="javascript:void(0)" :class="{'cur': priceChecked === index}">{{item.startPrice}} - {{item.endPrice}}</a>
+                        </dd>
+                    </dl>
                 </div>
-                <div class="accessory-result">
-                    <!-- filter -->
-                    <div class="filter stoppop" id="filter" :class="{'filterby-show': filterBy}">
-                        <dl class="filter-price">
-                            <dt>Price:</dt>
-                            <dd @click="setPriceFilter('all')">
-                                <a href="javascript:void(0)" :class="{'cur': priceChecked === 'all'}">All</a>
-                            </dd>
-                            <dd v-for="(item, index) in priceFilter" :key="index" @click="setPriceFilter(index)">
-                                <a href="javascript:void(0)" :class="{'cur': priceChecked === index}">{{item.startPrice}} - {{item.endPrice}}</a>
-                            </dd>
-                        </dl>
-                    </div>
 
-                    <!-- search result accessories list -->
-                    <div class="accessory-list-wrap">
-                        <div class="accessory-list col-4">
-                            <ul>
-                                <li v-for="(item, index) in goodsList" :key="index">
-                                    <div class="pic">
-                                        <a href="#">
-                                            <img
-                                                v-lazy="'static/img/' + item.productImage"
-                                                :key="item.productImage"
-                                                alt="">
-                                        </a>
+                <!-- search result accessories list -->
+                <div class="accessory-list-wrap">
+                    <div class="accessory-list col-4">
+                        <ul>
+                            <li v-for="(item, index) in goodsList" :key="index">
+                                <div class="pic">
+                                    <a href="#">
+                                        <img
+                                            v-lazy="'static/img/' + item.productImage"
+                                            :key="item.productImage"
+                                            alt="">
+                                    </a>
+                                </div>
+                                <div class="main">
+                                    <div class="name">{{item.productName}}</div>
+                                    <div class="price">{{item.salePrice}}</div>
+                                    <div class="btn-area">
+                                        <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
                                     </div>
-                                    <div class="main">
-                                        <div class="name">{{item.productName}}</div>
-                                        <div class="price">{{item.salePrice}}</div>
-                                        <div class="btn-area">
-                                            <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div
-                                style="text-align:center"
-                                v-infinite-scroll="loadMore"
-                                infinite-scroll-disabled="busy"
-                                infinite-scroll-distance="20">
-                                <img v-if="loading" src="../../static/loading/loading-spinning-bubbles.svg">
-                            </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div
+                            style="text-align:center"
+                            v-infinite-scroll="loadMore"
+                            infinite-scroll-disabled="busy"
+                            infinite-scroll-distance="20">
+                            <img v-if="loading" src="../../static/loading/loading-spinning-bubbles.svg">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <modal :mdshow="mdShow" @close="closeModal">
-            <p slot="message">请先登录，否则无法加入到购物车</p>
-            <div slot="btnGroup">
-                <a class="btn btn--m" @click="mdShow = false">关闭</a>
-            </div>
-        </modal>
-        <modal :mdshow="mdShowCart" @close="closeModal">
-            <p slot="message">加入购物车成功！</p>
-            <div slot="btnGroup">
-                <a class="btn btn--m" @click="mdShowCart = false">继续购物</a>
-                <router-link class="btn btn--m" to="/cart">查看购物车</router-link>
-            </div>
-        </modal>
-        <nav-footer></nav-footer>
     </div>
+    <modal :mdshow="mdShow" @close="closeModal">
+        <p slot="message">请先登录，否则无法加入到购物车</p>
+        <div slot="btnGroup">
+            <a class="btn btn--m" @click="mdShow = false">关闭</a>
+        </div>
+    </modal>
+    <modal :mdshow="mdShowCart" @close="closeModal">
+        <p slot="message">加入购物车成功！</p>
+        <div slot="btnGroup">
+            <a class="btn btn--m" @click="mdShowCart = false">继续购物</a>
+            <router-link class="btn btn--m" to="/cart">查看购物车</router-link>
+        </div>
+    </modal>
+</div>
 </template>
 <script>
-import NavHeader from '../components/NavHeader.vue';
-import NavFooter from '../components/NavFooter.vue';
 import NavBread from '../components/NavBread.vue';
 import Modal from '../components/modal.vue';
 
 export default {
     name: 'view-content',
     components: {
-        NavHeader,
-        NavFooter,
         NavBread,
         Modal
     },

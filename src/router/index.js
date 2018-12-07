@@ -9,6 +9,7 @@ import content from '@/views/content';
 import cart from '@/views/cart';
 import address from '@/views/address';
 import addNewAddress from '@/views/addNewAddress';
+import orderConfirm from '@/views/orderConfirm';
 
 Vue.use(Router);
 
@@ -29,5 +30,9 @@ export default new Router({
         path: '/addNewAddress',
         name: 'addNewAddress',
         component: addNewAddress
+    }, {
+        path: '/orderConfirm',
+        name: 'orderConfirm',
+        component: orderConfirm
     }]
 });

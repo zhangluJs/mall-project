@@ -1,6 +1,5 @@
 <template>
     <div>
-        <nav-header></nav-header>
         <nav-bread>
             <span>My Cart</span>
         </nav-bread>
@@ -139,13 +138,10 @@
                 <a class="btn btn--m" @click="modalConfirm = false">关闭</a>
             </div>
         </modal>
-        <nav-footer></nav-footer>
     </div>
 </template>
 <script>
 
-import NavHeader from '../components/NavHeader.vue';
-import NavFooter from '../components/NavFooter.vue';
 import NavBread from '../components/NavBread.vue';
 import Modal from '../components/modal.vue';
 import {currency} from '../util/currency';
@@ -185,8 +181,6 @@ export default {
         }
     },
     components: {
-        NavHeader,
-        NavFooter,
         NavBread,
         Modal
     },
