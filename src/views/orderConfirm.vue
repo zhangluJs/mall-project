@@ -94,10 +94,10 @@
 
             <div class="order-foot-wrap">
                 <div class="prev-btn-wrap">
-                    <button class="btn btn--m">Previous</button>
+                    <router-link to="/address" class="btn btn--m">Previous</router-link>
                 </div>
                 <div class="next-btn-wrap">
-                    <button class="btn btn--m btn--red">Proceed to payment</button>
+                    <button class="btn btn--m btn--red" @click="payMent">Proceed to payment</button>
                 </div>
             </div>
         </div>
@@ -139,6 +139,15 @@ export default {
                     }
                 });
                 this.orderTotal = this.subtotal + this.shipping;
+            });
+        },
+        payMent() {
+            this.$http.post('/users/payMent', {
+                orderTotal: this.orderTotal,
+                addressId: this.$route.query.addressId
+            }).then(res => {
+                res = res.data;
+                console.log(res);
             });
         }
     }

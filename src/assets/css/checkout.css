@@ -1428,7 +1428,7 @@ html {
 
 /** order confirm **/
 .checkout-order {
-    padding: 10px 0 50px 0;
+    /* padding: 10px 0 50px 0; */
 }
 
 .checkout-order .item-list-wrap {
