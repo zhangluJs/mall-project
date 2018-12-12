@@ -17,7 +17,16 @@ import './assets/css/login.css';
 import './assets/css/product.css';
 
 Vue.config.productionTip = false;
-
+// http response 拦截器
+axios.interceptors.response.use(response => {
+    let res = response.data;
+    if (res.status === '10001') {
+        alert('请先登录');
+    }
+    return response;
+}, err => {
+    console.log(err);
+});
 Vue.prototype.$http = axios;
 
 Vue.use(infiniteScroll);
@@ -26,11 +35,12 @@ Vue.use(VueLazyLoad, {
     loading: '../static/loading/loading-bars.svg'
 });
 
-
 /* eslint-disable no-new */
 new Vue({
     el: '#app',
     router,
-    components: {App},
+    components: {
+        App
+    },
     template: '<App/>'
 });

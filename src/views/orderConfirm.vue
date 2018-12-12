@@ -147,7 +147,9 @@ export default {
                 addressId: this.$route.query.addressId
             }).then(res => {
                 res = res.data;
-                console.log(res);
+                this.$router.push({
+                    path: `/orderSuccess?orderId=${res.result.orderId}`
+                });
             });
         }
     }
