@@ -13,7 +13,7 @@
                     <a href="javascript:void(0)" class="navbar-link" v-if="!nickName" @click="loginModalFlag = true">Login</a>
                     <a href="javascript:void(0)" class="navbar-link" v-if="nickName" @click="doLogOut" >Logout</a>
                     <div class="navbar-cart-container">
-                        <span class="navbar-cart-count"></span>
+                        <span class="navbar-cart-count" v-if="cartNum">{{cartNum}}</span>
                         <a class="navbar-link navbar-cart-link" href="/#/cart">
                             <img class="icon icon-cart" src="../../static/img/cart.png">
                         </a>
@@ -72,6 +72,11 @@ export default {
             this.errorTip = false;
         }
     },
+    computed: {
+        cartNum() {
+            return this.$store.state.cartCount;
+        }
+    },
     mounted() {
         this.checkLogin();
     },
@@ -81,8 +86,8 @@ export default {
                 res = res.data;
                 if (res.status === '0') {
                     this.nickName = res.result;
+                    this.getCartNum();
                 }
-
             });
         },
         login() {
@@ -105,6 +110,7 @@ export default {
 
                 this.loginModalFlag = false;
                 this.nickName = res.result.userName;
+                this.getCartNum();
             });
         },
         doLogOut() {
@@ -112,8 +118,15 @@ export default {
                 res = res.data;
                 if (res.status === '0') {
                     this.nickName = '';
+                    this.$store.commit('updateCartCount', '');
                 }
 
+            });
+        },
+        getCartNum() {
+            this.$http.get('/users/getCartNum').then(res => {
+                res = res.data;
+                this.$store.commit('updateCartCount', res.result.cartNum);
             });
         }
     }

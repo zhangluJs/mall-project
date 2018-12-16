@@ -7,6 +7,7 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router';
+import Vuex from 'vuex';
 import VueLazyLoad from 'vue-lazyload';
 import infiniteScroll from 'vue-infinite-scroll';
 import axios from 'axios';
@@ -20,14 +21,13 @@ Vue.config.productionTip = false;
 // http response 拦截器
 axios.interceptors.response.use(response => {
     let res = response.data;
-    if (res.status === '10001') {
-        alert('请先登录');
-    }
     return response;
 }, err => {
     console.log(err);
 });
 Vue.prototype.$http = axios;
+
+Vue.use(Vuex);
 
 Vue.use(infiniteScroll);
 
@@ -35,10 +35,22 @@ Vue.use(VueLazyLoad, {
     loading: '../static/loading/loading-bars.svg'
 });
 
+const store = new Vuex.Store({
+    state: {
+        cartCount: 0
+    },
+    mutations: {
+        updateCartCount(state, num) {
+            state.cartCount = num;
+        }
+    }
+});
+
 /* eslint-disable no-new */
 new Vue({
     el: '#app',
     router,
+    store,
     components: {
         App
     },
