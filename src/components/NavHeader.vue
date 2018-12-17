@@ -126,7 +126,7 @@ export default {
         getCartNum() {
             this.$http.get('/users/getCartNum').then(res => {
                 res = res.data;
-                this.$store.commit('updateCartCount', res.result.cartNum);
+                this.$store.commit('initcartCount', res.result.cartNum);
             });
         }
     }

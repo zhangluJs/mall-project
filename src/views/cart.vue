@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="cart-tab-5">
                                 <div class="cart-item-opration">
-                                    <a href="javascript:;" class="item-edit-btn" @click="delProduct(item.productId)">
+                                    <a href="javascript:;" class="item-edit-btn" @click="delProduct(item)">
                                         <svg class="icon icon-del">
                                             <use xlink:href="#icon-del"></use>
                                         </svg>
@@ -202,17 +202,18 @@ export default {
         closeModal() {
             this.modalConfirm = false;
         },
-        delProduct(id) {
-            this.productId = id;
+        delProduct(item) {
+            this.product = item;
             this.modalConfirm = true;
         },
         delCart() {
             this.$http.post('/users/del', {
-                productId: this.productId
+                productId: this.product.productId
             }).then(res => {
                 res = res.data;
                 if (res.status === '0') {
                     this.modalConfirm = false;
+                    this.$store.commit('updateCartCount', Number(-this.product.productNum));
                     this.init();
                 }
 
@@ -247,6 +248,14 @@ export default {
                 checked: item.checked
             }).then(res => {
                 res = res.data;
+                let num = 0;
+                if (flag === 'add') {
+                    num = 1;
+                }
+                else if (flag === 'minus') {
+                    num = -1;
+                }
+                this.$store.commit('updateCartCount', num);
             }).catch(err => {
                 alert(err);
             });

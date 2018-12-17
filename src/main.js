@@ -40,8 +40,11 @@ const store = new Vuex.Store({
         cartCount: 0
     },
     mutations: {
-        updateCartCount(state, num) {
+        initcartCount(state, num) {
             state.cartCount = num;
+        },
+        updateCartCount(state, num) {
+            state.cartCount += num;
         }
     }
 });
