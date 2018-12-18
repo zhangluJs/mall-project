@@ -8,7 +8,7 @@
 }
 
 html {
-    font-family: sans-serif,"\5FAE\8F6F\96C5\9ED1",arial;
+    font-family: sans-serif, "\5FAE\8F6F\96C5\9ED1", arial;
     font-size: 100%;
 
     -webkit-text-size-adjust: 100%;
@@ -69,7 +69,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-weight: normal;
+    font-weight: 400;
 }
 
 pre,
@@ -79,7 +79,7 @@ caption,
 th,
 figcaption {
     font-size: 1em;
-    font-weight: normal;
+    font-weight: 400;
     font-style: normal;
 }
 
@@ -178,7 +178,7 @@ code {
 
 b,
 strong {
-    font-weight: bold;
+    font-weight: 700;
 }
 
 sub,
@@ -245,8 +245,8 @@ table {
 }
 
 /** font style **/
-.font-bold {
-    font-weight: bold;
+.font-700 {
+    font-weight: 700;
 }
 
 .font-color-red {
@@ -413,9 +413,8 @@ body {
     font-size: 1.4rem;
     color: #605f5f;
     background: #f5f7fc;
-
+    -moz-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-       -moz-font-smoothing: grayscale;
     -moz-osx-font-smoothing: grayscale;
 }
 
@@ -484,7 +483,7 @@ a:hover {
 .page-title-normal h2 {
     padding: 40px 0 20px 0;
     font-size: 22px;
-    font-weight: bold;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .25em;
 }
@@ -621,7 +620,7 @@ a:hover {
     border: 1px solid #d1434a;
     font-family: "moderat", sans-serif;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 700;
     text-align: center;
     white-space: nowrap;
     text-transform: uppercase;
@@ -842,8 +841,8 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
     margin: 0;
 
     -webkit-appearance: none;

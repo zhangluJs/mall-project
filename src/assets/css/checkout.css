@@ -123,7 +123,7 @@ html {
     width: 25%;
     padding: 0 1em 1.25em 1em;
     border-bottom: 2px solid #ccc;
-    font-weight: bold;
+    font-weight: 700;
     line-height: 1.25em;
     text-align: center;
     text-transform: capitalize;
@@ -137,7 +137,7 @@ html {
 
 .check-step li em {
     font-size: .8em;
-    font-weight: normal;
+    font-weight: 400;
     color: #999;
 }
 
@@ -488,7 +488,7 @@ html {
 .cart-item-list .cart-item-title .item-name {
     width: 100%;
     font-family: "moderat", sans-serif;
-    font-weight: bold;
+    font-weight: 700;
     line-height: 76px;
     color: #000;
 }
@@ -809,7 +809,7 @@ html {
 .shipping-method li .price,
 .shipping-method-whiteglove li .price {
     height: 26px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .shipping-method li .shipping-tips,
@@ -830,7 +830,7 @@ html {
 .shipping-method-whiteglove li .shipping-tips .details {
     display: inline-block;
     margin-top: 10px;
-    font-weight: bold;
+    font-weight: 700;
     line-height: 1.5714;
     color: #ee7a23;
 }
@@ -1016,7 +1016,7 @@ html {
 
 .price-count .order-total-price span:last-child {
     font-size: 1.125em;
-    font-weight: bold;
+    font-weight: 700;
     color: #d1434a;
 }
 
@@ -1406,7 +1406,7 @@ html {
 .cart-foot-wrap .item-total .total-price {
     margin-left: 6px;
     font-size: 1.125em;
-    font-weight: bold;
+    font-weight: 700;
     line-height: 1.2;
     color: #d1434a;
 }
@@ -1497,7 +1497,7 @@ html {
 
 .md-white-glove .main-white-glove .link-faq {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 700;
     text-align: right;
 }
 

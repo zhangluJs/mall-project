@@ -73,7 +73,7 @@
     height: 4em;
     padding-bottom: 10px;
     font-family: "moderat", sans-serif;
-    font-weight: bold;
+    font-weight: 700;
     line-height: 1.25em;
 }
 
@@ -233,7 +233,7 @@
 .filter dt {
     margin-bottom: 30px;
     font-family: "moderat", sans-serif;
-    font-weight: bold;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .25em;
 }
@@ -314,7 +314,7 @@
 }
 
 .filter .filter-price dd .cur {
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .filter.filterby-show {

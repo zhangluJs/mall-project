@@ -49,7 +49,10 @@
                 </div>
             </div>
         </div>
-        <div class="md-overlay" v-if="loginModalFlag" @click="loginModalFlag = false"></div>
+        <div class="md-overlay"
+            v-if="loginModalFlag"
+            @click="loginModalFlag = false">
+        </div>
     </header>
 </template>
 
