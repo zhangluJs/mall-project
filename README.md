@@ -19,4 +19,6 @@ npm run build
 npm run build --report
 ```
 
+代码这块就暂时告一段落了，目前再折腾服务器，有点头疼。。。
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
