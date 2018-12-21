@@ -3,7 +3,7 @@
         <div class="navbar">
             <div class="navbar-left-container">
                 <a href="/">
-                    <img class="navbar-brand-logo" src="../assets/logo.png">
+                    <img class="navbar-brand-logo" src="../assets/WechatIMG1.jpeg">
                 </a>
             </div>
             <div class="navbar-right-container" style="display: flex;">
