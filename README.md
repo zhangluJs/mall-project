@@ -21,7 +21,7 @@ npm run build --report
 代码这块就暂时告一段落了，目前在折腾服务器，有点头疼。。。
 
 * 2018/12/21
-    http://zhangluupup.top:3000/#/   热烈庆祝该个人项目上线，开心:smile:smile:smile:smile:smile
+    http://zhangluupup.top:3000/#/   热烈庆祝该个人项目上线，开心:smile::smile::smile::smile::smile:
 
 * 2018/01/07
     网站截图
