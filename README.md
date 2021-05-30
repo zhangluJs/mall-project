@@ -1,4 +1,4 @@
-# vue2-demo
+# mall-project
 
 ##### 从零开始构建一个简单的购物商城项目
 > 使用 vue2 + vue-router + vuex + axios 进行前端代码开发
